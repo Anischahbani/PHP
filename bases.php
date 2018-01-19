@@ -365,6 +365,174 @@ echo '<hr>';
 for ( $j=0 ; $j<=10 ; $j++){
     echo $j.'#';
 }
+
+echo '<br>';
+
+// Afficher une liste de selection allant de l'année 2017 à 1950
+// Methode 1
+echo '<select>';
+for($j = 2017; $j >= 1950; $j-- )
+{
+echo "<option>$j</option>";
+}
+echo '</select>';
+?>
+
+<br>
+<!--Methode 2-->
+Année <select name="annee">
+<?php for ($a=date('Y'); $a>=1950 ; $a--): ?>
+    <option value="<?= $a?>"><?=$a?></option>
+<?php endfor; ?>
+</select>
+<br>
+
+
+<?php
+//Exercice : boucle imbriquées 
+//  Générer un tableau de 15 par 20
+// 15 colones , 20 lignes 
+?>
+<table> 
+    <?php 
+    $compteur=0;
+    for ($ligne=1 ; $ligne<=20 ; $ligne++){
+        echo '<tr>';
+        for ($colone=1 ; $colone<=15 ; $colone++){
+            $compteur++;
+            echo '<td>'.$compteur.'</td>';
+        }
+        echo '</tr>';
+    }
+    ?>
+</table>
+<?php 
+echo "<h2>Inclusion de fichiers </h2>";
+
+echo "Premire fois <br>";
+include ('exemple.php');
+echo "<br>";
+
+/*echo "Deuxieme fois <br>";
+include_once('exemple.php');
+echo "<br>";
+
+echo "troisième fois <br>";
+require('exemple.php');
+echo "<br>";
+
+echo "Quatrième fois <br>";
+require_once('exemple.php');*/
+echo "<br>";
+
+
+echo "<h2>Tableaux de données : Array </h2>";
+
+$liste= array('Ruben','Hamid','Moundir','Olivier','Romain', 'Chloe');
+vdm($liste);
+
+$fruit=array();
+$fruit[]='pomme';
+$fruit[]='poire';
+$fruit[]='orange';
+
+vdm($fruit);
+
+$fruit2 = array('pm' => 'pomme ', 'pr' => 'poire' , 'og' => 'orange');
+vdm($fruit2);
+
+$fruit2[]='cerise';
+$fruit2['bn']='banane';
+vdm($fruit2);
+
+$fruit2['pm']='pêche';
+vdm($fruit2);
+
+$fruit2[]='kiwi';
+vdm($fruit2);
+
+$fruit2 [99]='clémentine';
+$fruit2 []='raisin';
+vdm($fruit2);
+
+//Boucle foreach
+
+foreach ($fruit2 as $info){
+    echo $info. '-';
+}
+echo '<hr>';
+foreach ($fruit2 as $indice => $valeur){
+    echo " à l'indice $indice je trouve $valeur <br>";
+}
+// syntaxe : foreach (nomtableauaparcourir as indice => valeur)
+//           foreach (nomtableauaparcourir as valeur) 
+
+foreach ($fruit2 as $valeur){
+    echo "je trouve $valeur <br>";
+}
+
+
+$Superheros = array('Superman' => array("prenom" => "Clark", "nom" => "Kent" , "Univers "=>"DC Comic"),
+                 'Spiderman' => array("prenom" => "Peter", "nom" => "Parker", "Univers" =>"Marvel"),
+                 'Batman' => array("prenom" => "Bruce", "nom" => "Wayne", "Univers" =>"DC comics"),
+                 'Ironman' => array("prenom" => "Tony", "nom" => "Stark", "Univers" =>"Marvel"), );
+    
+vdm($Superheros);
+echo '<hr>';
+echo count($Superheros);
+echo'<br>';
+echo sizeof($Superheros);
+
+// count() et sizeof() infiquent tous deux le nombre d'entrées dans le tableau 
+echo '<br>';
+echo $Superheros['Batman']['prenom'];
+echo '<br>';
+echo $Superheros['Spiderman']['Univers'];
+
+echo '<br>';
+foreach ($Superheros as $hero => $valeur){
+    echo '<p><strong>'.$hero.'</strong></p>';
+    foreach ($valeur as $info=> $valeur2){
+    echo '  '.$info.':' .$valeur2 .'<br>' ;
+    }
+}
+
+vdm($fruit2);
+
+$fruits3=array ('pomme','cerise','orange');
+$nbelements = count($fruits3);
+for ($i=0 ; $i<$nbelements ; $i++){
+    echo $fruits3[$i].'<br>';
+}
+echo '<br>';
+
+foreach($fruits3 as $indice => $valeur)
+{
+echo "$indice - $valeur <br>";
+}
+
+echo "<hr>";
+echo "<h2>Objet</h2>";
+
+class Etudiant{
+    public $prenom  ='Julien';
+    public $age     =25;
+    public function pays (){
+        return 'France';
+    }
+}
+$objet = new Etudiant ;
+vdm($objet);
+var_dump(get_class_methods($objet));
+echo '<br>';
+echo $objet ->age;
+echo '<br>';
+echo $objet ->pays();
+$objet ->prenom ='Jeanne';
+vdm ($objet);
+$objet2 = new Etudiant ;
+vdm ($objet2);
+
 ?>
 <br>
 <?= 'allo' ?> <!-- revient à < ? php echo -->
