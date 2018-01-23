@@ -1,0 +1,32 @@
+.message{
+border:1px solid black;
+padding: 5px;
+margin:5px;
+border-radius: 8px; 
+background: lightgray;
+}
+.message:hover{
+    transform: scale(1.02);
+}
+
+.contenu{
+text-align: justify;
+
+}
+.titre{
+
+    font-style: italic;
+    color:blue;
+}
+body {
+    font-family: calibri, sans-serif;
+}
+legend{
+    font-size: 18px;
+    font-weight: bold;
+
+
+}
+.info{
+background: green;
+}

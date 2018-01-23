@@ -1,0 +1,9 @@
+.madiv{
+ border: 3px solid black;
+ background: lightpink;
+
+}
+
+th,td{
+    border:1px solid black;
+}
