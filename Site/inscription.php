@@ -28,20 +28,57 @@ if($_POST){
     -^signifie "commznce par tout ce qui suit"
     -$ signifie "finit par tout ce qui précède"
     -[] pour delimnier les intervalles (ici de a à z , de A à Z , de 0 à 9 , et on ajoute ".", "_"ou "-")
-    -le + pour dire que les caractères sont acceptés de 0 à x fois . 
+    -le + pour dire que la chaine peut faire de 1 à n caractères.
+
+        + équivalent de {1,}
+        ? équivalent de {0,1}
+        * équivalent de {0,}
+        {5} précidement
+        {3,15} de 3 à 15 caractères 
+
     */
+    if (!$verif_caractere){
+        $contenu .= '<div class="alert alert-danger">Le pseudo doit contenir 3 à 15 caractères (lettre de a à Z , chiffres de 0 à 9, _.-)</div>';
+    }
     
+    if (!$verif_codepostal){
+        $contenu .= '<div class="alert alert-danger">Le code n\'est pas correct</div>';
+    }
     
-    
+    if ($_POST['civilite'] !='m' && $_POST['civilite'] !='f'){
+        $contenu .= '<div class="alert alert-danger">De quel genre êtes-vous</div>';
+    }
+
+    //astuce de controle d'email avec filter_var , fonction qui vérifie la chaine de caractère par rapport à un format 
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+        $contenu .= '<div class="alert alert-danger">Adresse mail invalide</div>';
+    }
     
     
     //si tout va bien
     //je controle que le pseudo n'existe pas déja dans la table
     //sinon j'invite l'internaute à changer de pseudo
+    $membre = executeRequete("SELECT * FROM membre WHERE pseudo = :pseudo" , array('pseudo' => $_POST['pseudo']));
+    if ($membre->rowCount()>0){
+        $contenu .= '<div class="alert alert-danger">Pseudo indisponible , merci d\'en choisir un autre</div>';
+    }
 
     //si tout va bien
     // j'insère le nouveau membre dans la table membre 
     //je mets $inscription à true  
+    if (empty($contenu)){
+        executeRequete("INSERT INTO membre VALUES(NULL,:pseudo,:mdp,:nom,:prenom,:email,:civilite,:ville,:code_postal,:adresse,0)" , array('pseudo' =>$_POST['pseudo'],
+                                                                                                                                     'mdp' =>MD5($_POST['mdp']),
+                                                                                                                                     'nom' =>$_POST['nom'],    
+                                                                                                                                     'prenom' =>$_POST['prenom'],
+                                                                                                                                     'email' =>$_POST['email'],    
+                                                                                                                                     'civilite' =>$_POST['civilite'],    
+                                                                                                                                     'ville' =>$_POST['ville'],    
+                                                                                                                                     'code_postal' =>$_POST['code_postal'],   
+                                                                                                                                     'adresse' =>$_POST['adresse']    ));
+        $contenu .='<div class="alert alert-success">Vous êtes inscrit à notre site . <a href="connexion.php">Cliquer ici pour vous connecter</a></div>';
+        $inscription = true ;
+    }
 }
 
 require_once('inc/haut.php');
@@ -68,32 +105,32 @@ if (!$inscription):
         </div>
         <div class="form-group">
             <label for="nom">Nom</label>
-            <input type="text" name="nom" id="nom" required size="15" class="form-control" value="<?=$_POST['nom']?? ''?>">
+            <input type="text" name="nom" id="nom"  size="15" class="form-control" value="<?=$_POST['nom']?? ''?>">
         </div>
         <div class="form-group">
             <label for="nom">Email</label>
-            <input type="text" name="email" id="email" required size="25" class="form-control"  value="<?=$_POST['email']?? ''?>">
+            <input type="text" name="email" id="email"  size="25" class="form-control"  value="<?=$_POST['email']?? ''?>">
         </div>
         <div class="form-group">
             <label for="civilite">Civilité</label>
             <input type="radio" name="civilite" value="f" <?= (isset($_POST['civilite']) && $_POST['civilite'] == 'f') ? 'checked' : '' ?>/>  Femme
-			<input type="radio" name="civilite" value="m" <?= (isset($_POST['civilite']) && $_POST['civilite'] == 'm') ? 'checked' : '' ?>/>  Homme<br/>
+			<input type="radio" name="civilite" value="m" <?= (isset($_POST['civilite']) && $_POST['civilite'] == 'm' || (!isset($_POST['civilite']))) ? 'checked' : '' ?>/>  Homme<br/>
         </div>
         <div class="form-group">
             <label for="ville">Ville</label>
-            <input type="text" name="ville" id="ville" required size="15" class="form-control" value="<?=$_POST['ville']?? ''?>">
+            <input type="text" name="ville" id="ville"  size="15" class="form-control" value="<?=$_POST['ville']?? ''?>">
         </div>
         <div class="form-group">
             <label for="code_postal">Code Postal</label>
-            <input type="text" name="code_postal" id="code_postal" required size="5" class="form-control" value="<?=$_POST['code_postal']?? ''?>">
+            <input type="text" name="code_postal" id="code_postal"  size="5" class="form-control" value="<?=$_POST['code_postal']?? ''?>">
         </div>
         <div class="form-group">
             <label for="adresse">Adresse</label>
-            <textarea type="text" name="adresse" id="adresse" class="form-control" value="<?=$_POST['adresse']?? ''?>"></textarea>
+            <textarea type="text" name="adresse" id="adresse" class="form-control" cols="35" rows="4" ><?=$_POST['adresse']?? ''?></textarea>
         </div>
 
         <div class="form-group">
-            <button type="submit" name ="inscription" class ='btn btn-success btn-block' style="margin-top: 25px;">S'inscrire</button>
+            <button type="submit" class ='btn btn-success btn-block' style="margin-top: 25px;">S'inscrire</button>
         </div>
     </form>
 </div>

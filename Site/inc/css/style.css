@@ -4,3 +4,16 @@ body{
 footer{
     margin: 50px 0 ;
 }
+
+table{
+    width: 90%;
+    background: lightgray;
+   
+}
+table th{
+    text-align: center;
+    font-size: 16px;
+}
+table td{
+    font-style: italic;
+}
