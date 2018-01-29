@@ -6,7 +6,7 @@ footer{
 }
 
 table{
-    width: 90%;
+    width: 100%;
     background: lightgray;
    
 }
@@ -16,4 +16,12 @@ table th{
 }
 table td{
     font-style: italic;
+}
+
+.img-thumbnail{
+    width: 100px;
+    height: 100px;
+}
+.hauteur {
+  min-height: 80hv;
 }
