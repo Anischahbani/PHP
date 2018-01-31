@@ -17,7 +17,6 @@ function estConnecteEtAdmin(){
         return false;
     }
 }
-
 function executeRequete($sql,$params=array()){
     if (!empty($params))
     {
@@ -25,71 +24,81 @@ function executeRequete($sql,$params=array()){
             $params[$indice]=htmlspecialchars($param,ENT_QUOTES);       
          }
     }
-
     global $pdo ;
     $r=$pdo->prepare($sql);
     $r->execute($params);
-
     if( !empty($r->errorInfo()[2])){
         die('<p>Erreur rencontrée pendant la requête . Message '.$errorInfo()[2].'</p>');
     }
     return $r; //on retourne l'objet issu de la requete à l'endroit ou la fonction a été appelée 
 }
-
-//Fonction liées au panier
-
-function creationpanier(){
-    //si le panier n'existe pas on le créé vide 
-    if (!isset($_SESSION['panier'])){
+function creationPanier()
+{
+    // si le panier n'existe pas on le crée vide
+    if ( !isset($_SESSION['panier']) )
+    {
         $_SESSION['panier'] = array();
         $_SESSION['panier']['id_produit'] = array();
         $_SESSION['panier']['quantite'] = array();
         $_SESSION['panier']['prix'] = array();
-    } 
+    }
 }
-function ajouterproduitdanspanier($id_produit,$quantite,$prix){
-    creationpanier();
-
-    // Avant d'ajouter, on vérifie si le produit n'est pas déjà présent dans le panier, si c'est le cas, on ne fait que modifier sa quantité
-    $position_produit = array_search( $id_produit , $_SESSION['panier']['id_produit']);
-    // array_search() permet de vérifier si une valeur se trouve dans un tableau array. Si c'est le cas, on récupère l'indice correspondant.
-    if($position_produit === false){
+function ajouterProduitDansPanier($id_produit,$quantite,$prix){
+    
+    creationPanier();
+    // array search = 
+    $position_produit = array_search( $id_produit, $_SESSION['panier']['id_produit']);
+    if ( $position_produit === false )
+    {
         $_SESSION['panier']['id_produit'][]=$id_produit;
         $_SESSION['panier']['quantite'][]=$quantite;
         $_SESSION['panier']['prix'][]=$prix;
-
     }
     else{
-        $_SESSION['panier']['quantite'][$position_produit] +=$quantite;
+        $_SESSION['panier']['quantite'][$position_produit] += $quantite;
     }
 }
-
-
-
 function nbArticlesPanier(){
-
-    $nb='';
-    if(isset($_SESSION['panier']['id_produit'])){
-        $nb=array_sum($_SESSION['panier']['quantite']);
-        if ($nb !=0){
-            $nb ='<span class="badge">' .$nb.'</span>(' .montanttotal(). ' € )';
-        }
-        else{
+    $nb = '';
+    if ( isset($_SESSION['panier']['id_produit']) )
+    {
+        $nb = array_sum($_SESSION['panier']['quantite']);
+        if ($nb != 0)
+        {
+            $nb = '<span class="badge">'.$nb.'</span> ('.montantTotal().' €)';
+        }   
+        else
+        {
             $nb='';
         }
     }
     return $nb;
 }
-function montanttotal(){
-            
-            $total=0;
-            for($i=0; $i <count($_SESSION['panier']['id_produit']); $i++)
-            {
-                $total += $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
-            }
-            return $total;
-
+function montantTotal()
+{
+    $total=0;
+    for($i=0; $i<count($_SESSION['panier']['id_produit']);$i++)
+    {
+        $total += $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
+    }
+    return $total;
 }
 
+
+function retirerProduitPanier($id_article_a_supp)
+{
+    // on cherche d'abord la position du produit dans le panier 
+    $position_produit = array_search($id_article_a_supp,$_SESSION['panier']['id_produit']);
+
+    if ( $position_produit !== false )
+    {
+        // si on a trouvé le produit (la fonction n'a pas renvoyé exactement un booléen FALSE)
+        array_splice($_SESSION['panier']['id_produit'], $position_produit,1);
+        array_splice($_SESSION['panier']['quantite'], $position_produit,1);
+        array_splice($_SESSION['panier']['prix'], $position_produit,1);
+
+        // efface et remplace une portion de tableau à partir de l'indice  et sur 1 cran/ligne/indice ()
+    }
+}
 
 ?>

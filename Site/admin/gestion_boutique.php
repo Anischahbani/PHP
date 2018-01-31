@@ -26,9 +26,9 @@ if(isset($_GET['action']) && $_GET['action']=='suppression' &&isset($_GET['id_pr
 
 
 // Onglets affichage ajout/modif
-$contenu .='<ul class="nav nav-tabs starter-template">
-                <li><a href="?action=affichage" class="btn btn-primary">Affichage des produits</a></li>
-                <li><a href="?action=ajout" class="btn btn-info">Ajouter un produit</a></li>
+$contenu .='<ul class="nav nav-tabs">
+                <li><a href="?action=affichage">Affichage des produits</a></li>
+                <li><a href="?action=ajout">Ajouter un produit</a></li>
             </ul>';
 
 //  Enregistrement du produit en BDD
@@ -178,8 +178,8 @@ if ( isset($_GET['action']) && ( $_GET['action']=='ajout' || $_GET['action']=='m
 
 <div class="form-group">
 <label for="public">Public</label>
-<input type="radio" name="public" value="homme" <?= (isset($produit_actuel['public']) && $produit_actuel['public']=='homme' || !isset($produit_actuel['public'])) ? 'checked' : '' ?>>Homme
-<input type="radio" name="public" value="femme" <?= (isset($produit_actuel['public']) && $produit_actuel['public']=='femme') ? 'checked' : '' ?>>Femme
+<input type="radio" name="public" value="m" <?= (isset($produit_actuel['public']) && $produit_actuel['public']=='m' || !isset($produit_actuel['public'])) ? 'checked' : '' ?>>Homme
+<input type="radio" name="public" value="f" <?= (isset($produit_actuel['public']) && $produit_actuel['public']=='f') ? 'checked' : '' ?>>Femme
 <input type="radio" name="public" value="mixte" <?= (isset($produit_actuel['public']) && $produit_actuel['public']=='mixte') ? 'checked' : '' ?>>Mixte
 </div>
     

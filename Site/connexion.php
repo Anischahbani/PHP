@@ -5,6 +5,8 @@ require_once('inc/init.php');
 //traitement 
 if(isset($_GET['action']) && $_GET['action'] == 'deconnexion' ){
     session_destroy();
+    unset($_SESSION['membre']);
+    //pour conserver le panier a la deconnexion
 }
 if (estConnecte()){
     header('location:profil.php'); // Renvoie un entete au client pour demander la page profil 
