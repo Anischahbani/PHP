@@ -1,0 +1,292 @@
+@font-face {
+	font-family: 'UTMAvo';
+	src: url('../fonts/UTMAvo.eot');
+	src: local('UTMAvo'), url('../fonts/UTMAvo.woff') format('woff'), url('../fonts/UTMAvo.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_79356">Text with this font applied</p> */
+.fontsforweb_fontid_79356 {
+	font-family: 'UTMAvo' !important;
+}
+*{
+	box-sizing: border-box;
+}
+body{
+	color: #666666;
+	margin-top: 80px;
+	font-family:'UTMAvo';
+	font-size: 1em;
+}
+h1,h2,h3,h4,h5,h6{
+	font-family:'Ubuntu', sans-serif;
+}
+a{
+	text-decoration: none;
+	color: #0099ff;
+}
+ul{
+	list-style: none;
+	padding-left: 0;
+}
+.couleur1{
+	background-color: #f3f3f3; /* gris leger */
+}
+.couleur2{
+	background-color: #76cdcd; /* vert */
+	color: #fff;
+}
+.couleur3{
+	background-color: #849dd6; /* violet */
+	color: #fff;
+}
+.couleur4{
+	background-color: #fff; /* blanc */
+	color: #666666;
+}
+
+/* *******STRUCTURE******** */
+.conteneur{
+	width: 80%;
+	border: 1px dotted red;
+	margin: 0 auto;
+}
+#link1, #link2, #link3, #link4{
+	position: relative;
+	bottom: 80px;
+}
+/* ********HEADER********* */
+header{
+	background: #686a6a;
+	min-height: 80px;
+	color: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10;
+}
+header h1{
+	margin: 10px 0 0 0;
+}
+header h1 a{
+	background: #0099ff;
+ 	color: #fff;
+	height: 60px;
+	font-size: 1.5em;
+	padding: 2px 150px 3px 0;
+}
+header nav{
+	float:right;
+	margin-top: 10px;
+}
+header nav a{
+	display: block;
+	height:60px;
+	float:left;
+	padding: 0 25px;
+	line-height: 60px;
+	color: #fff;
+	/* font-weight: bold; */
+	transition: 0.3s;
+}
+header nav a:hover{
+	background: #0099ff;
+}
+section{
+	min-height: 600px;
+	border: 1px solid grey;
+}
+
+/* ********SECTION1********* */
+.imageronde{
+	float: right;
+	width: 140px;
+	margin: 0 60px 0 20px;
+	border-radius: 200px 200px 200px 200px;
+	-moz-border-radius: 200px 200px 200px 200px;
+	-webkit-border-radius: 200px 200px 200px 200px;
+	border: 0px solid #000000;
+}
+#section1 li h3{
+	margin: 10px 0;
+}
+.jauge_fond{
+	background: #e1e1e1;
+	height: 6px;
+	width: 100%;
+}
+.jauge_couleur{
+	height: 100%;
+}
+#section1 .bloc25 img{
+	width: 100%;
+	max-width: 500px;
+}
+/* ********SECTION2********* */
+
+figure{
+	border: 1px solid #c0c0c0;
+	width: 90%;
+	position: relative;
+	overflow: hidden;
+}
+figure img{
+	display: block;
+	width: 100%;
+}
+figcaption h3{
+	font-size: 0.8em;
+	margin: 10px 0;
+} 
+figcaption h3 a{
+	color: #ffffff;
+	text-decoration: none;
+}
+
+figure figcaption{
+	background: rgba(0,155,255,.75);
+	text-align: center;
+	color: white;
+	width: 100%;
+	position: absolute;
+	bottom:-25%;
+	transition: .6s;
+}
+figure:hover figcaption{
+	bottom:0;
+}
+/* ********SECTION3********* */
+
+table{
+	width: 90%;
+	margin-bottom: 30px;
+}
+td.year{
+	width: 12%;
+	font-size: 1.4em;
+	font-weight: bold;
+	border-right: 1px solid;
+	padding-top: 5px;
+	padding-right: 10px;
+	text-align: right;
+}
+td.year p{
+	font-size: .8em;
+	font-weight: normal;
+	margin-top: 5px;
+	color: rgba(255,255,255,.7);
+}
+td.job{
+	width: 88%;
+	font-size: 1.3em;
+	border-bottom: 1px solid;
+	padding: 5px 0 10px 10px;
+}
+td.job_desc{
+	color: rgba(255,255,255,.7);
+	padding: 10px 0 0 10px;	
+}
+.bloc33 td.year p{
+	color: #666666;
+}
+.bloc33  td.job_desc{
+	color: #666666;
+}
+
+/* ********SECTION4********* */
+iframe{
+	border:0;
+	width:100%;
+	height: 400px;
+}
+label{
+	display: block;
+	margin-top: 20px;
+}
+input,textarea{
+	width: 100%;
+	height: 35px;
+	border: 1px solid #dedede;
+	margin-top: 6px;
+}
+textarea{
+	height: 155px;
+	resize: vertical;
+}
+input[type=submit]{
+	background: #0099ff;
+	color: #fff;
+	font-weight: bold;
+}
+input[type=submit]:hover{
+	background: #8dbc01;
+}
+
+footer{
+	background-color: #686a6a;
+	min-height: 60px;
+	color: #fff;
+}
+
+
+
+.ligne:after{
+	content:'';
+	display: block;
+	clear: both;
+}
+.bloc25{
+	width: 25%;
+	float: left;
+	padding: 10px;
+}
+.bloc30{
+	width: 30%;
+	float: left;
+	padding: 10px;
+}
+.bloc33{
+	width: 33.33%;
+	float: left;
+	padding: 10px;
+}
+.bloc40{
+	width: 40%;
+	float: left;
+	padding: 10px;
+}
+.bloc50{
+	width: 50%;
+	float: left;
+	padding: 10px;
+}
+.bloc60{
+	width: 60%;
+	float: left;
+	padding: 10px;
+}
+.bloc66{
+	width: 66.66%;
+	float: left;
+	padding: 10px;
+}
+.bloc70{
+	width: 70%;
+	float: left;
+	padding: 10px;
+}
+.bloc100{
+	width: 100%;
+	float: left;
+	padding: 10px;
+}
+.clear{clear: both;}
+
+
+
+
+
+
+
+
+
+
