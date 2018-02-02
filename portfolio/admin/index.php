@@ -2,6 +2,13 @@
 
 require_once('init.php');
 
+if (isset($_GET['action']) && $_GET['action']=='deconnecter')
+{
+    session_destroy();
+    header('location:/PHP/BASES/portfolio/admin');
+    exit();
+}
+
 if ( isset($_POST['connexion']) )
 {
     // j'ai cliqué sur "me connecter"
@@ -39,7 +46,47 @@ if ( isset($_SESSION['user']) )
     {
         echo '<a href="?table='.$matable['Tables_in_portfolio'].'">'.ucfirst($matable['Tables_in_portfolio']).'</a> ';
     }
+    echo '<a href="?table=messages&option=noform">Messages</a> ';
+    echo '<a href="/PHP/BASES/portfolio" target="_blank">Voir le front</a> ';
+    echo '<a href="?action=deconnecter">Se deconnecter</a>';
     echo "<hr>";
+
+    // ----------------- Suppression-------------------
+
+    if ( isset($_GET['action']) && $_GET['action']=='supprimer' && isset($_GET['table']) )
+    {
+        $table = $_GET['table'];
+        $colonnes = $base->query("SHOW COLUMNS FROM ".$table." LIKE 'id_%' ");
+        $colonne = $colonnes->fetch(PDO::FETCH_ASSOC);
+        $indice = $colonne['Field'];
+
+        if ( isset($_GET[$indice])){
+            $del = $base->prepare("DELETE FROM ".$table." WHERE $indice = :indice_asupp");
+            $del->execute( array('indice_asupp' => $_GET[$indice] ));
+        }
+    }
+    //-------------------------------------------------
+
+    // ------- traitement du post en AJOUT ou en MODIF----------------
+    if ( isset($_POST['update']) )
+    {
+        $champs = array();
+        $params = array();
+        
+        foreach( $_POST as $index => $valeur )
+        {
+            if ( $index !='table' && $index !='update')
+            {
+                $champs[] = ':'.$index; // :annee
+                $params[$index]=$valeur; // $params['annee'] => 2018
+            }
+        }
+        $maj = $base->prepare("REPLACE INTO ".$_POST['table']." VALUES (".implode(',',$champs).")" );
+        $maj->execute($params);
+
+    }
+    //-------------------------------------------------------------
+
 
     if ( !empty($_GET['table']) )
     {
@@ -56,6 +103,24 @@ if ( isset($_SESSION['user']) )
         $affichage .='<table><tr>';
         $nbcolonnes=$resul->columnCount();
 
+        // Si on a cliqué sur modifier, on veut charger les infos de la ligne dans le formulaire
+        if ( isset($_GET['action']) && $_GET['action']== 'modifier')
+        {
+
+            $colonnes = $base->query("SHOW COLUMNS FROM ".$table_courante." LIKE 'id_%' ");
+            $colonne = $colonnes->fetch(PDO::FETCH_ASSOC);
+            $indice_courant = $colonne['Field'];
+            if ( isset($_GET[$indice_courant]) )
+            {
+                $resul2 = $base->prepare("SELECT * FROM ".$table_courante." WHERE ".$indice_courant."=:indice_courant");
+                $resul2->execute(array('indice_courant' => $_GET[$indice_courant]));
+                $ligne_courante = $resul2->fetch(PDO::FETCH_ASSOC);
+                //var_dump($ligne_courante);
+            }            
+
+        }
+        //-----------------------------------------------------------------------------
+
         $formulaire .='<hr>
         <form action="" method="post">
         <input type="hidden" name="table" value="'.$table_courante.'">';
@@ -66,7 +131,8 @@ if ( isset($_SESSION['user']) )
             $info_colonne=$resul->getColumnMeta($i);
             if ( $i == 0 ) { 
                 $indice_table =  $info_colonne['name'];
-                $formulaire .='<input type="hidden" name="indice" value="0">';
+                $formulaire .='<input type="hidden" name="indice" value="'.(
+                    (isset($indice_courant) && isset($ligne_courante[$indice_courant])) ? $ligne_courante[$indice_courant] : 0).'">';
              }
 
             $affichage .='<th>'.$info_colonne['name'].'</th>';
@@ -74,11 +140,11 @@ if ( isset($_SESSION['user']) )
                 $formulaire .='<p><label for="'.$info_colonne['name'].'">'.$info_colonne['name'].'</label> ';
                 if ( $info_colonne['name'] == 'description')
                 {
-                    $formulaire .='<textarea name="'.$info_colonne['name'].'" cols="40" rows="5"></textarea></p>';
+                    $formulaire .='<textarea name="'.$info_colonne['name'].'" cols="40" rows="5">'.( $ligne_courante[$info_colonne['name']] ?? '' ).'</textarea></p>';
                 }
                 else
                 {
-                $formulaire .='<input type="text" id="'.$info_colonne['name'].'" name="'.$info_colonne['name'].'" value=""></p>';
+                $formulaire .='<input type="text" size="100" id="'.$info_colonne['name'].'" name="'.$info_colonne['name'].'" value="'.( $ligne_courante[$info_colonne['name']] ?? '' ).'"></p>';
                 }
             }
         }
@@ -95,15 +161,31 @@ if ( isset($_SESSION['user']) )
                 {
                     $affichage .="<td>".$information."</td>";
                 }
-            $affichage .='<td><a href="?table='.$table_courante.'&'.$indice_table.'='.$ligne[$indice_table].'&action=modifier">Modifier</a></td>
-                          <td><a href="?table='.$table_courante.'&'.$indice_table.'='.$ligne[$indice_table].'&action=supprimer" onclick="return(confirm(\'Etes vous certain de vouloir supprimer cette ligne?\'))">Supprimer</a></td>';    
+             
+            if ( !(isset($_GET['option']) && $_GET['option'] == 'noform' ) )
+            {  
+            $affichage .='<td><a href="?table='.$table_courante.'&'.$indice_table.'='.$ligne[$indice_table].'&action=modifier">Modifier</a></td>';
+            }
+
+            $affichage .='<td><a href="?table='.$table_courante.'&'.$indice_table.'='.$ligne[$indice_table].'&action=supprimer';
+
+            if ( (isset($_GET['option']) && $_GET['option'] == 'noform' ) )
+            {  
+                $affichage .='&option=noform';
+            }
+
+            $affichage .='" onclick="return(confirm(\'Etes vous certain de vouloir supprimer cette ligne?\'))">Supprimer</a></td>'; 
+
             $affichage .="</tr>";
            
         }
 
         $affichage .="</table>";
         echo $affichage;
+        if ( !(isset($_GET['option']) && $_GET['option'] == 'noform' ) )
+        {
         echo $formulaire;
+        }
     }
 
 

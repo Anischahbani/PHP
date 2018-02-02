@@ -1,0 +1,12 @@
+body{
+    background: lightgray !important ;
+    margin: 0;
+}
+h1{
+    background: gray !important ;
+    color:black !important ;
+}
+.hauteur {
+    min-height: 80hv;
+    margin-top: 90px;
+  }

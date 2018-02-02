@@ -26,7 +26,8 @@ if($_POST){
 		<meta name="keywords" content="mots clés, clefs" />
 		<!-- fichiers css -->
 		<link rel="stylesheet" href="css/normalize.css" />
-		<link rel="stylesheet" href="css/style.css" /><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+		<link rel="stylesheet" href="css/style.css" />
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
 		
 	</head>
 	<body>
